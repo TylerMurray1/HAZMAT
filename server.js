@@ -5,6 +5,7 @@ var jsrender = require('jsrender');
 const CONFIG = require('./public/config.json');
 const app = express();
 const gVars = require('./public/scripts/globalVars');
+var fs = require('fs')
 
 //TODO: I'd like to make this a dictionary that associates IDs with user names - Sam
 
@@ -43,5 +44,16 @@ app.post('/', function (req, res) {
   }
 
 })
+
+app.post('/saveJSON', (req, res) => {
+
+  console.log(typeof req.body);
+  // TODO: save req.body as users.json
+  res.json({ ok: true });
+  fs.writeFile('./public/users.json', JSON.stringify(req.body), function(err, data){
+    if (err) console.log(err);
+    console.log("Successfully Written to File.");
+});
+});
 
 app.listen(CONFIG.port, () => console.log(`Example app listening on port ${CONFIG.port}!`));
