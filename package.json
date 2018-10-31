@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "clientconfig": "^1.1.1",
     "express": "^4.16.4",
     "jsrender": "^0.9.91"
   }
