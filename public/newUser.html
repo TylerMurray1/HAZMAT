@@ -1,0 +1,28 @@
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="/scripts/newUser.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.js"></script>
+  <title>HAZMAT Tracking</title>
+  <meta name="description" content="The HTML5 Gerald">
+  <meta name="author" content="Sam">
+</head>
+
+<body>
+  <input type="text" name="name_value" placeholder="Name">
+  <input type="text" name="id_value" placeholder="ID">
+  <br><br>
+  <button id="newUserSubmit" class="float-left submit-button" >Submit</button>
+  <script type="text/javascript">
+   document.getElementById("newUserSubmit").onclick = function () {
+     //TODO: overwrite idArray with new ID located in the id_value field
+     document.write("click")
+   };
+   </script>
+</body>
+</html>

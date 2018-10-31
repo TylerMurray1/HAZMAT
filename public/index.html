@@ -18,5 +18,11 @@
 	  <br><br>
 	  <input type="submit" value="Submit">
 	</form>
+  <button id="createUser" class="float-left submit-button" >New User</button>
+  <script type="text/javascript">
+   document.getElementById("createUser").onclick = function () {
+       location.href = "http://localhost:3000/newUser";
+   };
+ </script>
 </body>
 </html>

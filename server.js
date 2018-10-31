@@ -1,22 +1,26 @@
+//DO NOT MOVE THIS FROM THE ROOT DIRECTORY WITHOUT CONSULTING SAM
 const express = require('express');
 var bodyParser = require("body-parser");
 var jsrender = require('jsrender');
-const CONFIG = require('../config.json')
+const CONFIG = require('./public/config.json');
 const app = express();
+const gVars = require('./public/scripts/globalVars');
 
+//TODO: I'd like to make this a dictionary that associates IDs with user names - Sam
 
-var idArray = ['123','321','111','222'];
 var authenticated = false;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 app.get('/', function(req, res){
     authenticated = false;
-    res.sendFile(CONFIG.userFilePath+'/HAZMAT/index.html')
+    res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/index.html')
   }
 )
-app.get('/logout', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/logout.html'))
+app.get('/logout', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html'))
+app.get('/newUser', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/newUser.html'))
 app.get('/sensor_calculation', function (req, res) {
   if(!authenticated){
     res.redirect('http://localhost:3000/');
@@ -29,7 +33,7 @@ app.get('/sensor_calculation', function (req, res) {
 })
 
 app.post('/', function (req, res) {
-  if (idArray.includes(req.body.id_value)) {
+  if (gVars.idArray.includes(req.body.id_value)) {
     authenticated = true;
     res.redirect('http://localhost:3000/sensor_calculation');
   }
