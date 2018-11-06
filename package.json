@@ -13,7 +13,8 @@
     "clientconfig": "^1.1.1",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
-    "jsrender": "^0.9.91"
+    "jsrender": "^0.9.91",
+    "serialport": "^7.0.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.5"
