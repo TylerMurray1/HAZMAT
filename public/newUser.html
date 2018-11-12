@@ -1,4 +1,4 @@
-
+<!--TODO: Make this an admin only page -->
 <!doctype html>
 
 <html lang="en">
@@ -23,7 +23,7 @@
 
     document.getElementById("newUserSubmit").onclick = function () {
       $.getJSON("/users.json", function (json) {
-        json[document.getElementById("name_field").value] = document.getElementById("id_field").value;
+        json[document.getElementById("id_field").value] = document.getElementById("name_field").value;
         $.ajax({
           url: "/saveJSON",
           type: "POST",

@@ -35,7 +35,7 @@ app.get('/sensor_calculation', function (req, res) {
 })
 
 app.post('/', function (req, res) {
-  console.log(Object.values(userObj).indexOf(req.body.id_value))
+  console.log(Object.keys(userObj).indexOf(req.body.id_value))
   if(Object.values(userObj).indexOf(req.body.id_value) > -1){
     authenticated = true;
     res.redirect('http://localhost:3000/sensor_calculation');
