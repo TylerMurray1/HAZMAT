@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.js"></script>
+  <title>HAZMAT Tracking</title>
+  <meta name="description" content="The HTML5 Gerald">
+  <meta name="author" content="Ty and Kyle and Sam">
+
+</head>
+
+<body>
+	<h1 id="home-banner">HAZMAT Admin Page</h1>
+  <div>
+    <div>
+      <button id="createUser" class="float-left submit-button">New User</button>
+      <input type="text" name="id_value" placeholder="ID">
+    </div>
+    <button id="deleteUser" class="float-left submit-button">Delete User</button>
+  </div>
+  <script type="text/javascript">
+   document.getElementById("createUser").onclick = function () {
+       location.href = "http://localhost:3000/newUser";
+   };
+   document.getElementById("deleteUser").onclick = function () {
+       location.href = "http://localhost:3000/newUser";
+   };
+ </script>
+
+</body>
+<footer>
+	<p>Created by: HAZMAT Capstone Team</p>
+</footer>
+</html>

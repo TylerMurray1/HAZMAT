@@ -18,11 +18,11 @@
   <input type="text" id="name_field" placeholder="Name">
   <input type="text" id="id_field" placeholder="ID">
   <br><br>
-  <button id="newUserSubmit" class="float-left submit-button" >Submit</button>
+  <button id="newUserSubmit" class="float-left submit-button" onclick="submitData()" >Submit</button>
   <script type="text/javascript" >
-
-    document.getElementById("newUserSubmit").onclick = function () {
-      $.getJSON("/users.json", function (json) {
+    function submitData(){
+      //$.getJSON("/HAZMAT/public/users.json", function (json) {
+        var json = {};
         json[document.getElementById("name_field").value] = document.getElementById("id_field").value;
         $.ajax({
           url: "/saveJSON",
@@ -30,8 +30,7 @@
           data: json
         });
         location.href = "http://localhost:3000/";
-     })
-   };
+    };
    </script>
 </body>
 </html>
