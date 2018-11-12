@@ -25,22 +25,26 @@ app.get('/', function(req, res){
 )
 app.get('/logout', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html'))
 
+app.get('/transaction', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/transaction.html'))
+app.get('/removeItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html'))
+app.get('/returnItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnItem.html'))
+
 app.get('/newUser', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/newUser.html'))
 
-app.get('/weigh', function (req, res) {  
+app.get('/weigh', function (req, res) {
 
 	var downloadTimer = setInterval(function() {
 		var tmpl = jsrender.templates('./public/weigh.html');
 		var html = tmpl.render({wait_time: (timeleft)});
 		timeleft = timeleft - 1;
 		res.redirect('http://localhost:3000/weigh');
-		
+
 		if(timeleft < 1) {
 			res.redirect('http://localhost:3000/sensor_calculation');
 			clearInterval(downloadTimer);
-		}	
+		}
 	},1000);
-	
+
 })
 
 app.get('/sensor_calculation', function (req, res) {
@@ -48,7 +52,7 @@ app.get('/sensor_calculation', function (req, res) {
     res.redirect('http://localhost:3000/');
   }
   else{
-	
+
 	//var Readline = SerialPort.parsers.Readline;
 	//var parser = new Readline();
 	//var port = new SerialPort('/dev/ttyAMA0', {
@@ -71,7 +75,7 @@ app.post('/', function (req, res) {
   console.log(Object.values(userObj).indexOf(req.body.id_value))
   if(Object.values(userObj).indexOf(req.body.id_value) > -1){
     authenticated = true;
-    res.redirect('http://localhost:3000/weigh');
+    res.redirect('http://localhost:3000/transaction');
   }
   else {
 	  //retry login
