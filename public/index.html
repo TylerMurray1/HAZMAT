@@ -14,17 +14,18 @@
 <body>
 	<h1 id="home-banner">HAZMAT Locker Login</h1>
 	<form method="POST">
-	  <h2>Employee ID #:</h2><br>
-	  <input type="text" name="id_value" placeholder="ID">
+    <div horizontal layout>
+	     <h2>Employee Name:</h2><br>
+	     <input type="text" name="name_value" placeholder="Username">
+    </div>
+    <div horizontal layout>
+	     <h2>Employee ID #:</h2><br>
+	     <input type="text" name="id_value" placeholder="ID">
+    </div>
 	  <br><br>
 	  <input id="submit-btn" type="submit" value="Submit">
 	</form>
-  <button id="createUser" class="float-left submit-button" >New User</button>
-  <script type="text/javascript">
-   document.getElementById("createUser").onclick = function () {
-       location.href = "http://localhost:3000/newUser";
-   };
- </script>
+
 </body>
 <footer>
 	<p>Created by: HAZMAT Capstone Team</p>
