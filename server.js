@@ -7,8 +7,9 @@ const CONFIG = require('./public/config.json');
 const app = express();
 var userObj = require('./public/users.json');
 var adminObj = require('./public/admins.json');
-var fs = require('fs')
+var fs = require('fs');
 var path = require('path');
+var Web3 = require('web3');
 
 //TODO: I'd like to make this a dictionary that associates IDs with user names - Sam
 
@@ -58,6 +59,29 @@ app.get('/returnItem', (req, res) => {
   const port = new SerialPort('/dev/cu.usbmodem14201')
 
   const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
+
+  // //Temporary for blockchain connection trial
+  // if (typeof web3 !== 'undefined') {
+  //   web3 = new Web3(web3.currentProvider);
+  //   var eth = web3.eth;
+  //   web3.eth.defaultAccount = web3.eth.accounts[0];
+  // }
+  // else {
+  //   // set the provider you want from Web3.providers
+  //   web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+  //   var eth = web3.eth;
+  //   web3.eth.defaultAccount = web3.eth.accounts[0];
+  //
+  //   var chemicalContract = new web3.eth.contract([ { "constant": true, "inputs": [], "name": "getBlock", "outputs": [ { "name": "", "type": "string", "value": "Hello" }, { "name": "", "type": "string", "value": "123321" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x2e97766d" }, { "constant": false, "inputs": [ { "name": "_weight", "type": "string" }, { "name": "_tagNum", "type": "string" } ], "name": "setBlock", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x63618964" } ], '0x6619C8Fd8693C68FA268b7E6D38e1C9d263783f4', {
+  //   from: '0x1234567890123456789012345678901234567891', // default from address
+  //   gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+  //   })
+  //
+  //   var getData = chemicalContract.setBlock.getData(function parameters);
+  //   web3.eth.sendTransaction({to:Contractaddress, from:Accountaddress, data: getData});
+  //
+  // }
+
 	parser.on('data', function() {
     dataStore = parser.buffer.toString('utf8');
     dataArray = dataStore.split(": ");
@@ -69,6 +93,8 @@ app.get('/returnItem', (req, res) => {
 
 app.get('/admin', (req, res) => {
   res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/admin.html')
+
+});
 
 app.get('/transaction', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/transaction.html'))
 app.get('/removeItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html'))
@@ -161,7 +187,7 @@ app.post('/saveJSON', (req, res) => {
 
 app.post('/deleteUserData', (req, res) => {
   res.json({ ok: true });
-  //
+
   fs.readFile('./public/users.json', function readFileCallback(err, data){
     if (err){
         console.log(err);
@@ -172,7 +198,8 @@ app.post('/deleteUserData', (req, res) => {
     console.log(obj)
     var json = JSON.stringify(obj);
     fs.writeFile('./public/users.json', json);
-  }});
+  }
+  });
 });
 
 app.listen(CONFIG.port, () => console.log(`Example app listening on port ${CONFIG.port}!`));

@@ -12,10 +12,14 @@
   "dependencies": {
     "clientconfig": "^1.1.1",
     "crypto": "^1.0.1",
+    "ethereumjs-testrpc": "^6.0.3",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "jsrender": "^0.9.91",
-    "serialport": "^7.0.2"
+    "node-gyp": "^3.8.0",
+    "rebuild": "^0.1.2",
+    "serialport": "^7.0.2",
+    "web3": "^0.20.7"
   },
   "devDependencies": {
     "nodemon": "^1.18.5"
