@@ -32,7 +32,7 @@ app.get('/', function(req, res){
 )
 app.get('/logout', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html'))
 
-<<<<<<< HEAD
+
 app.get('/transaction', (req, res) => {
   res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/transaction.html')
 })
@@ -69,7 +69,7 @@ app.get('/returnItem', (req, res) => {
 
 app.get('/admin', (req, res) => {
   res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/admin.html')
-=======
+
 app.get('/transaction', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/transaction.html'))
 app.get('/removeItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html'))
 app.get('/returnItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnItem.html'))
@@ -89,7 +89,6 @@ app.get('/weigh', function (req, res) {
 		}
 	},1000);
 
->>>>>>> b0569a97d3d5c30f65fc9d5e9aef64c72c7b6002
 })
 
 app.get('/sensor_calculation', function (req, res) {
@@ -97,7 +96,6 @@ app.get('/sensor_calculation', function (req, res) {
     res.redirect('http://localhost:3000/');
   }
   else{
-<<<<<<< HEAD
     myChain.addBlock(dataStore);
     var fileContent = JSON.stringify(myChain);
     fs.appendFile("./blockchain/store.json", fileContent, (err) => {
@@ -109,7 +107,6 @@ app.get('/sensor_calculation', function (req, res) {
   	var tmpl = jsrender.templates('./public/sensor_calculation.html');
   	var html = tmpl.render({weight: weight, rfid_tag: rfidTag});
   	res.send(html);
-=======
 
 	//var Readline = SerialPort.parsers.Readline;
 	//var parser = new Readline();
@@ -126,7 +123,6 @@ app.get('/sensor_calculation', function (req, res) {
 	var tmpl = jsrender.templates('./public/sensor_calculation.html');
 	var html = tmpl.render({weight: "15", rfid_tag: "1234567"});
 	res.send(html);
->>>>>>> b0569a97d3d5c30f65fc9d5e9aef64c72c7b6002
   }
 })
 
