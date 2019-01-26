@@ -20,7 +20,7 @@ First, go to this website and install the valid geth (Go-Ethereum) version:
 * [Go Ethereum](https://geth.ethereum.org/downloads/) - Go Ethereum downloads page.
 
 After doing this, you need to download an application called MIST:
-* [MIST] (https://github.com/ethereum/mist/releases) - MIST downloads
+* [MIST](https://github.com/ethereum/mist/releases) - MIST downloads
 
 This should be it in terms of downloading none Node.js packages. Now onto command line things.
 
@@ -101,7 +101,7 @@ node_modules/.bin/testrpc
 node server.js
 ```
 
-* If you make it here, you are all set up! 
+* If you make it here, you are all set up!
 
 
 
