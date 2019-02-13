@@ -70,15 +70,14 @@ app.get('/returnItem', (req, res) => {
     web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     var eth = web3.eth;
     web3.eth.defaultAccount = web3.eth.accounts[0];
-    var abi = [ { "constant": true, "inputs": [], "name": "getBlock", "outputs": [ { "name": "", "type": "string", "value": "Hello" }, { "name": "", "type": "string", "value": "Hello" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x2e97766d" }, { "constant": false, "inputs": [ { "name": "_weight", "type": "string" }, { "name": "_tagNum", "type": "string" } ], "name": "setBlock", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x63618964" } ];
+    var abi = [ { "constant": false, "inputs": [ { "name": "_jsonObject", "type": "string" } ], "name": "storeJSONString", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xaa245386" } ];
 
     var chemicalsContract = web3.eth.contract(abi);
 
-    var Chemicals = chemicalsContract.at('0x6619C8Fd8693C68FA268b7E6D38e1C9d263783f4');
+    var Chemicals = chemicalsContract.at("0x3446c90511d16931Ff125851D2E8261110CB6E97");
 
     //example on how to call a smart contract function to push to the blockchain
-    Chemicals.setBlock("Hello2", "Hello2");
-    console.log(Chemicals.getBlock());
+    Chemicals.storeJSONString("{}");
 
 
   }
