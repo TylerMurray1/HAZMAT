@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "static")));
 
 app.get('/', function(req, res){
     authenticated = false;
-    res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/index.html')
+    res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/scanin.html')
   }
 )
 app.get('/logout', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html'))
@@ -41,6 +41,16 @@ app.get('/transaction', (req, res) => {
 })
 
 app.get('/removeItem', (req, res) => {
+	parser.on('data', function() {
+    dataStore = parser.buffer.toString('utf8');
+    dataArray = dataStore.split(": ");
+    rfidTag = dataArray[0];
+    weight = dataArray[1];
+  });
+  res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html')
+})
+
+app.get('/scanin', (req, res) => {
 	parser.on('data', function() {
     dataStore = parser.buffer.toString('utf8');
     dataArray = dataStore.split(": ");
@@ -126,6 +136,23 @@ app.get('/sensor_calculation', function (req, res) {
 	// res.send(html);
   }
 })
+
+app.get('/datasheet_table', function (req, res) {
+  if(!authenticated){
+    res.redirect('http://localhost:3000/');
+  }
+  else{
+  	var tmpl = jsrender.templates('./public/sensor_calculation.html');
+  	var html = tmpl.render({weight: weight, rfid_tag: rfidTag});
+  	res.send(html);
+
+
+	// var tmpl = jsrender.templates('./public/sensor_calculation.html');
+	// var html = tmpl.render({weight: "15", rfid_tag: "1234567"});
+	// res.send(html);
+  }
+})
+
 
 app.post('/', function (req, res) {
   var loginTag = null;

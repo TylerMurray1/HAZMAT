@@ -1,16 +1,33 @@
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.js"></script>
-  <title>HAZMAT Tracking</title>
-  <meta name="author" content="Sam">
-  <meta http-equiv="refresh" content="3;url=http://localhost:3000/" />
-</head>
 
-<body>
-	<h1>
-    You are logged out. You will be redirected to the login screen momentarily.
-	</h1>
-</body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>HAZMAT Finished</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+
+        <link href="../static/css/style.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="navi d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom box-shadow">
+          <img class="mr-2" src="favicon.ico" alt="" width="50" height="50">
+          <h5 class="my-0 mr-md-auto font-weight-normal">HAZMAT Tracker</h5>
+          <a class="btn btn-outline-primary" href="scanin.html">Logout</a>
+        </div>
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h2 class="jumbotron-heading">Would you like to complete another transaction?</h2>
+                <a href="transaction.html" class="btn btn-warning btn-lg mt-2 mr-2 text-white" role="button" aria-disabled="true">Yes</a>
+                <a href="scanin.html" class="btn btn-warning btn-lg mt-2 ml-2 text-white" role="button" aria-disabled="true">No</a>
+            </div>
+        </section>
+    </body>
 </html>

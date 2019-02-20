@@ -1,22 +1,33 @@
+
 <!doctype html>
-
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.js"></script>
-  <title>HAZMAT Tracking</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="Ty and Kyle">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
 
-<body>
-	<p>
-		Please select an option below.
-	</p><br>
-	<div horizontal layout>
-    <button onclick="location.href = '/removeItem'">Removing Chemical</button>
-    <button onclick="location.href = '/returnItem'">Returning Chemical</button>
-  </div>
-</body>
+        <title>HAZMAT Transaction</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+
+        <link href="../static/css/style.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <img class="mr-2" src="favicon.ico" alt="" width="50" height="50">
+          <h5 class="my-0 mr-md-auto font-weight-normal">HAZMAT Tracker</h5>
+          <a class="btn btn-outline-primary" href="scanin.html">Logout</a>
+        </div>
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h2 class="jumbotron-heading">Are you removing or returning an item?</h2>
+                <a href="removeItem.html" class="btn btn-warning btn-lg mt-2 mr-2 text-white" role="button" aria-disabled="true">Removing</a>
+                <a href="returnItem.html" class="btn btn-warning btn-lg mt-2 ml-2 text-white" role="button" aria-disabled="true">Returning</a>
+            </div>
+        </section>
+    </body>
 </html>
