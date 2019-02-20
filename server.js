@@ -9,8 +9,12 @@ var adminObj = require('./public/admins.json');
 var fs = require('fs');
 var path = require('path');
 var Web3 = require('web3');
-
-//TODO: I'd like to make this a dictionary that associates IDs with user names - Sam
+//RFID Parser Constants
+const SerialPort = require('serialport')
+const Readline = require('@serialport/parser-readline')
+const port = new SerialPort('/dev/cu.usbmodem14201')
+const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
+//End RFID Parser Constants
 
 var authenticated = false;
 var timeleft = 5;
@@ -37,11 +41,6 @@ app.get('/transaction', (req, res) => {
 })
 
 app.get('/removeItem', (req, res) => {
-  const SerialPort = require('serialport')
-  const Readline = require('@serialport/parser-readline')
-  const port = new SerialPort('/dev/cu.usbmodem14201')
-
-  const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
 	parser.on('data', function() {
     dataStore = parser.buffer.toString('utf8');
     dataArray = dataStore.split(": ");
@@ -52,12 +51,6 @@ app.get('/removeItem', (req, res) => {
 })
 
 app.get('/returnItem', (req, res) => {
-  const SerialPort = require('serialport')
-  const Readline = require('@serialport/parser-readline')
-  const port = new SerialPort('/dev/cu.usbmodem14201')
-
-  const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
-
   //////// ETHEREUM SECTION ////////
   //Temporary for blockchain connection trial
   if (typeof web3 !== 'undefined') {
@@ -135,9 +128,14 @@ app.get('/sensor_calculation', function (req, res) {
 })
 
 app.post('/', function (req, res) {
+  var loginTag = null;
+	parser.on('data', function() {
+    dataStore = parser.buffer.toString('utf8');
+    dataArray = dataStore.split(": ");
+    loginTag = dataArray[0];
+  });
   //console.log(Object.values(userObj).indexOf(req.body.id_value))
-  if((Object.values(userObj).indexOf(req.body.id_value) > -1 && Object.keys(userObj).indexOf(req.body.id_value) > -1 )
-  || (Object.values(adminObj).indexOf(req.body.id_value) > -1 && Object.keys(adminObj).indexOf(req.body.id_value) > -1)){
+  if(loginTag != null){
     authenticated = true;
     if(Object.values(adminObj).indexOf(req.body.id_value) > -1){
       res.redirect('http://localhost:3000/admin');
@@ -146,11 +144,22 @@ app.post('/', function (req, res) {
       res.redirect('http://localhost:3000/transaction');
     }
   }
-  else {
-	  //retry login
-	  res.redirect('http://localhost:3000/');
+  else{
+    if((Object.values(userObj).indexOf(req.body.id_value) > -1 && Object.keys(userObj).indexOf(req.body.id_value) > -1 )
+    || (Object.values(adminObj).indexOf(req.body.id_value) > -1 && Object.keys(adminObj).indexOf(req.body.id_value) > -1)){
+      authenticated = true;
+      if(Object.values(adminObj).indexOf(req.body.id_value) > -1){
+        res.redirect('http://localhost:3000/admin');
+      }
+      else{
+        res.redirect('http://localhost:3000/transaction');
+      }
+    }
+    else {
+      //retry login
+      res.redirect('http://localhost:3000/');
+    }
   }
-
 })
 
 app.post('/saveJSON', (req, res) => {
