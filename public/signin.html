@@ -13,23 +13,6 @@
     <title>HAZMAT Sign In</title>
     <link rel="icon" href="favicon.ico">
     <link href="../static/css/signin.css" rel="stylesheet">
-
-    <script>
-        function login() {
-          var x = document.forms["myForm"]["userid"].value;
-          var y = document.forms["myForm"]["password"].value;
-          if (x == "test" && y =="test") {
-            window.location.assign("transaction.html")
-            return false;
-          }
-          else {
-            alert("Invalid login. Please try again.");
-            document.getElementById("myForm").reset();
-            return false;
-          }
-        }
-    </script>
-
   </head>
 
   <body class="text-center">
@@ -50,4 +33,20 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
   </body>
 
+  <script>
+
+    function login() {
+      var x = document.forms["myForm"]["userid"].value;
+      var y = document.forms["myForm"]["password"].value;
+      if (x == "test" && y =="test") {
+        window.location.assign("transaction")
+        return false;
+      }
+      else {
+        alert("Invalid login. Please try again.");
+        document.getElementById("myForm").reset();
+        return false;
+      }
+    }
+</script>
 </html>

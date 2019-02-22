@@ -60,6 +60,7 @@ app.get('/scanin', (req, res) => {
   res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html')
 })
 
+
 app.get('/returnItem', (req, res) => {
   //////// ETHEREUM SECTION ////////
   //Temporary for blockchain connection trial
@@ -104,6 +105,12 @@ app.get('/transaction', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/
 app.get('/removeItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html'))
 app.get('/returnItem', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnItem.html'))
 app.get('/admin', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/admin.html'))
+app.get('/return', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/return.html'))
+app.get('/signin', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/signin.html')})
+app.get('/returnScan', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnScan.html')})
+app.get('/returnWeigh', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnWeigh.html')})
+
+app.get('/favicon.ico', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/favicon.ico')})
 
 app.get('/weigh', function (req, res) {
 
