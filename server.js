@@ -217,16 +217,8 @@ app.get('/logout', (req, res) => {
 
 });
 
-app.get('/datasheet_table', function (req, res) {
-  if(!authenticated){
-    res.redirect('http://localhost:3000/');
-  }
-  else{
-  	var tmpl = jsrender.templates('./public/sensor_calculation.html');
-  	var html = tmpl.render({weight: weight, rfid_tag: rfidTag});
-  	res.send(html);
-
-  }
+app.get('/dataSheets', function (req, res) {
+	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/dataSheets.html');
 })
 
 app.get('/favicon.ico', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/favicon.ico')})
