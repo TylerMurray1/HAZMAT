@@ -14,7 +14,7 @@ var authenticated = false;
 var timeleft = 5;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "static")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 // VARIABLES FOR RFID SCANS
 var dataStore = "";
@@ -228,79 +228,6 @@ app.get('/datasheet_table', function (req, res) {
 
   }
 })
-
-// WE PROBABLY DON"T NEED WHAT IS COMMENTED BELOW
-//////////////////////////////////////////
-// app.post('/', function (req, res) {
-//   var loginTag = null;
-// 	parser.on('data', function() {
-//     dataStore = parser.buffer.toString('utf8');
-//     dataArray = dataStore.split(": ");
-//     loginTag = dataArray[0];
-//   });
-//   //console.log(Object.values(userObj).indexOf(req.body.id_value))
-//   if(loginTag != null){
-//     authenticated = true;
-//     if(Object.values(adminObj).indexOf(req.body.id_value) > -1){
-//       res.redirect('http://localhost:3000/admin');
-//     }
-//     else{
-//       res.redirect('http://localhost:3000/transaction');
-//     }
-//   }
-//   else{
-//     if((Object.values(userObj).indexOf(req.body.id_value) > -1 && Object.keys(userObj).indexOf(req.body.id_value) > -1 )
-//     || (Object.values(adminObj).indexOf(req.body.id_value) > -1 && Object.keys(adminObj).indexOf(req.body.id_value) > -1)){
-//       authenticated = true;
-//       if(Object.values(adminObj).indexOf(req.body.id_value) > -1){
-//         res.redirect('http://localhost:3000/admin');
-//       }
-//       else{
-//         res.redirect('http://localhost:3000/transaction');
-//       }
-//     }
-//     else {
-//       //retry login
-//       res.redirect('http://localhost:3000/');
-//     }
-//   }
-// })
-//
-// app.post('/saveJSON', (req, res) => {
-//   res.json({ ok: true });
-//   //
-//   fs.readFile('./public/users.json', function readFileCallback(err, data){
-//     if (err){
-//         console.log(err);
-//     } else {
-//     obj = JSON.parse(data);
-//     obj[Object.keys(req.body)[0]] = Object.values(req.body)[0]
-//     var json = JSON.stringify(obj);
-//     fs.writeFile('./public/users.json', json);
-//   }});
-// });
-//
-// app.post('/deleteUserData', (req, res) => {
-//   res.json({ ok: true });
-//
-//   fs.readFile('./public/users.json', function readFileCallback(err, data){
-//     if (err){
-//         console.log(err);
-//     } else {
-//     obj = JSON.parse(data);
-//     console.log(obj)
-//     delete obj[Object.keys(req.body)[0]]
-//     console.log(obj)
-//     var json = JSON.stringify(obj);
-//     fs.writeFile('./public/users.json', json);
-//   }
-//   });
-// });
-//
-// app.get('/admin', (req, res) => {
-// 	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/admin.html');
-//
-// });
 
 app.get('/favicon.ico', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/favicon.ico')})
 
