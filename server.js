@@ -50,6 +50,7 @@ app.get('/removeItem', (req, res) => {
   res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html')
 })
 
+//This might need to be renamed to avoid confusion between logging in and removing item
 app.get('/scanin', (req, res) => {
 	parser.on('data', function() {
     dataStore = parser.buffer.toString('utf8');
@@ -109,6 +110,7 @@ app.get('/return', (req, res) => res.sendFile(CONFIG.userFilePath+'/HAZMAT/publi
 app.get('/signin', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/signin.html')})
 app.get('/returnScan', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnScan.html')})
 app.get('/returnWeigh', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnWeigh.html')})
+app.get('/dataSheets', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/dataSheets.html')})
 
 app.get('/favicon.ico', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/favicon.ico')})
 
@@ -144,21 +146,21 @@ app.get('/sensor_calculation', function (req, res) {
   }
 })
 
-app.get('/datasheet_table', function (req, res) {
-  if(!authenticated){
-    res.redirect('http://localhost:3000/');
-  }
-  else{
-  	var tmpl = jsrender.templates('./public/sensor_calculation.html');
-  	var html = tmpl.render({weight: weight, rfid_tag: rfidTag});
-  	res.send(html);
+// app.get('/dataSheets', function (req, res) {
+//   if(!authenticated){
+//     res.redirect('http://localhost:3000/');
+//   }
+//   else{
+//   	var tmpl = jsrender.templates('./public/sensor_calculation.html');
+//   	var html = tmpl.render({weight: weight, rfid_tag: rfidTag});
+//   	res.send(html);
 
 
-	// var tmpl = jsrender.templates('./public/sensor_calculation.html');
-	// var html = tmpl.render({weight: "15", rfid_tag: "1234567"});
-	// res.send(html);
-  }
-})
+// 	// var tmpl = jsrender.templates('./public/sensor_calculation.html');
+// 	// var html = tmpl.render({weight: "15", rfid_tag: "1234567"});
+// 	// res.send(html);
+//   }
+// })
 
 
 app.post('/', function (req, res) {

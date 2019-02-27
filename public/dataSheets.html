@@ -14,21 +14,24 @@
 <body>
 	<table style="width:100%">
         <tr>
-          <th>Firstname</th>
-          <th>Lastname</th> 
-          <th>Age</th>
+          <th>Product</th>
+          <th>Datasheet</th> 
         </tr>
         <tr>
-          <td>Jill</td>
-          <td>Smith</td> 
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>Eve</td>
-          <td>Jackson</td> 
-          <td>94</td>
+            <td>Frosted Flakes</td> 
+          <td>
+            <a id="ffLink" href="https://www.kelloggs.com/en_US/products/kellogg-s-corn-flakes-cereal-product.html"> MMMMM</a>
+          </td>
         </tr>
       </table>
+      <script>
+        var frostedFlakesLink = document.getElementById('ffLink');
+        frostedFlakesLink.onclick = showLink();
+        function showLink() {
+          window.open("https://www.kelloggs.com/en_US/products/kellogg-s-corn-flakes-cereal-product.html", "Frosted Flakes", "width=500,height=500");
+          return false;
+        }
+      </script>
 </body>
 <footer>
 	<p>Created by: HAZMAT Capstone Team</p>
