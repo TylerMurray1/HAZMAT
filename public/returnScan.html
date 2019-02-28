@@ -16,7 +16,7 @@
 
         <link href="./css/style.css" rel="stylesheet">
 
-        <!-- <script type = "text/javascript">
+       <!-- <script type = "text/javascript">
                function Redirect() {
                     window.location.assign("returnWeigh")
                }
@@ -37,4 +37,16 @@
             </div>
         </section>
     </body>
+    <script>
+        var Http = new XMLHttpRequest();
+        var url='http://localhost:3000/scanReturnChemical';
+        Http.open("GET", url);
+        Http.send();
+
+        Http.onreadystatechange = function () {
+                if(Http.readyState === 4 && Http.status === 200) {
+                        window.location.href = Http.responseText;
+                }
+        };
+    </script>
 </html>
