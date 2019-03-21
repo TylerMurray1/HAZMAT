@@ -169,7 +169,6 @@ app.get('/scanRemoveChemical', (req, res) => {
 
 app.get('/return', (req, res) => {
 	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/return.html')
-
 });
 
 app.get('/returnDispose', (req, res) => {
@@ -187,4 +186,9 @@ app.get('/dataSheets', function (req, res) {
 
 app.get('/favicon.ico', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/favicon.ico')})
 
+app.get('/newItem', (req, res) => {
+	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/newItem.html')
+});
+
 app.listen(CONFIG.port, () => console.log(`Example app listening on port ${CONFIG.port}!`));
+
