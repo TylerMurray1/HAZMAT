@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>HAZMAT Add Item</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+
+        <link href="./css/style.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <img class="mr-2" src="favicon.ico" alt="" width="50" height="50">
+          <h5 class="my-0 mr-md-auto font-weight-normal">HAZMAT Tracker</h5>
+          <a class="btn btn-outline-primary" href="http://localhost:3000/">Logout</a>
+        </div>
+        <section class="jumbotron text-center mb-0">
+            <div class="container text-left">
+                <form>
+                    <div class="form-group">
+                      <label for="chemical_name">Chemical Name</label>
+                      <input type="text" class="form-control"  placeholder="Enter chemical name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="max_volume">Max Volume</label>
+                      <input type="number" class="form-control" placeholder="Enter max volume" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp_date">Expiration Date</label>
+                        <input type="datetime-local" class="form-control" placeholder="Enter expiration date" required>
+                      </div>
+                    <p>After completing the form above, please scan the item.</p>
+                </form>
+            </div>
+        </section>
+    </body>
+</html>
