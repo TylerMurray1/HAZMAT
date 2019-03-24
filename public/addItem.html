@@ -26,19 +26,35 @@
                 <form>
                     <div class="form-group">
                       <label for="chemical_name">Chemical Name</label>
-                      <input type="text" class="form-control"  placeholder="Enter chemical name" required>
+                      <input id="name" type="text" class="form-control"  placeholder="Enter chemical name" required>
                     </div>
                     <div class="form-group">
                       <label for="max_volume">Max Volume</label>
-                      <input type="number" class="form-control" placeholder="Enter max volume" required>
+                      <input id="volume" type="number" class="form-control" placeholder="Enter max volume" required>
                     </div>
                     <div class="form-group">
                         <label for="exp_date">Expiration Date</label>
-                        <input type="datetime-local" class="form-control" placeholder="Enter expiration date" required>
+                        <input id="date" type="date" class="form-control" placeholder="Enter expiration date" required>
                       </div>
                     <p>After completing the form above, please scan the item.</p>
                 </form>
             </div>
         </section>
     </body>
+    <script>
+    document.getElementById("date").oninput = function(){
+        var Http = new XMLHttpRequest();
+        var url='http://localhost:3000/scanNewChemical';
+        var params = 'name=' + encodeURIComponent(document.getElementById("name").value) + '&volume=' + encodeURIComponent(document.getElementById("volume").value) + '&date=' + encodeURIComponent(document.getElementById("date").value);
+        Http.open("POST", url, true);
+        Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        Http.onreadystatechange = function () {
+                if(Http.readyState === 4 && Http.status === 200) {
+                        window.location.href = Http.responseText;
+                }
+        };
+        Http.send(params);
+        };
+    </script>
 </html>
