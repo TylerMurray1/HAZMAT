@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>HAZMAT Transaction</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+
+        <link href="./css/style.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <img class="mr-2" src="favicon.ico" alt="" width="50" height="50">
+          <h5 class="my-0 mr-md-auto font-weight-normal">HAZMAT Tracker</h5>
+          <a class="btn btn-outline-primary" href="http://localhost:3000/transaction">Back</a>
+        </div>
+        <section class="jumbotron text-center">
+            <div class="container">
+            </div>
+        </section>
+    </body>
+    <script>
+        var Http = new XMLHttpRequest();
+        var url='http://localhost:3000/getClosetJSON';
+        Http.open("GET", url);
+        Http.send();
+
+        Http.onreadystatechange = function () {
+                if(Http.readyState === 4 && Http.status === 200) {
+                        var obj = JSON.parse(Http.responseText);
+
+                        var table = document.createElement('table');
+
+                        var header = table.createTHead();
+                        var headRow = header.insertRow(0);
+
+                        var headCell1 = headRow.insertCell(0);
+                        var headCell2 = headRow.insertCell(1);
+                        var headCell3 = headRow.insertCell(2);
+
+                        headCell1.innerHTML = "<b>Chemical Name</b>"
+                        headCell2.innerHTML = "<b>Chemical Weight</b>"
+                        headCell3.innerHTML = "<b>Chemical RFID #</b>"
+
+                        for(var i = 1; i < obj.Items.length+1; i += 1) {
+                          var row = table.insertRow(i);
+
+                          var cell1 = row.insertCell(0);
+                          var cell2 = row.insertCell(1);
+                          var cell3 = row.insertCell(2);
+                          cell1.innerHTML = obj.Items[i-1].ChemicalName;
+                          cell2.innerHTML = obj.Items[i-1].ChemicalVolume;
+                          cell3.innerHTML = obj.Items[i-1].RFIDTagNumber;
+                        }
+
+                        document.getElementsByClassName("container")[0].appendChild(table);
+                }
+        };
+    </script>
+</html>
