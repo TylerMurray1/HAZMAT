@@ -38,6 +38,13 @@ app.get('/', function(req, res){
 
 });
 
+// SPANISH HOME PAGE
+app.get('/es/', function(req, res){
+	authenticated = false;
+	res.sendFile(CONFIG.userFilePath + 'HAZMAT/public/es/scaninES.html');
+
+});
+
 app.get('/scanBadge', function(req, res) {
 
 	const SerialPort = require('serialport');

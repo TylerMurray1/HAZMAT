@@ -1,0 +1,48 @@
+
+<!-- A script is needed that continuously reads and waits for RFID. -->
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>HAZMAT Scan In</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+
+        <link href="./css/scanin.css" rel="stylesheet">
+    </head>
+
+    <body >
+        <section class="jumbotron text-center mb-0 pb-0 pt-0">
+            <div class="container">
+                <img class="mb-4" src="favicon.ico" alt="" width="72" height="72">
+                <h1 class="jumbotron-heading">Por favor escanee su tarjeta de identificación</h1>
+                <p class="lead text-muted">o haga clic en el botón de abajo para iniciar sesión con su ID de usuario y contraseña.</p>
+                <a href="signin" class="btn btn-primary my-2">Registrarse</a>
+                <br>
+                <a href="dataSheets" class="btn btn-secondary my-2">Hojas de datos</a>
+
+                <p class="mt-3 text-muted">&copy; HAZMAT Team - 2019</p>
+            </div>
+        </section>
+        <button><a href="/">Inglés</a></button>
+    </body>
+    <script>
+	var Http = new XMLHttpRequest();
+	var url='http://localhost:3000/scanBadge';
+	Http.open("GET", url);
+	Http.send();
+    
+        Http.onreadystatechange = function () {
+  		if(Http.readyState === 4 && Http.status === 200) {
+    			window.location.href = Http.responseText;
+  		}
+	};
+    </script>
+</html>
