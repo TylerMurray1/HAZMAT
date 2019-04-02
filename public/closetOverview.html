@@ -36,6 +36,17 @@
                 if(Http.readyState === 4 && Http.status === 200) {
                         var obj = JSON.parse(Http.responseText);
 
+                        var arr = obj.Items;
+
+                          for (var i = 0; i < arr.length; i += 1) {
+                            for (var j = i + 1; j < arr.length; j += 1) {
+                              if (arr[i].RFIDTagNumber == arr[j].RFIDTagNumber) {
+                                arr.splice(j, 1);
+                              }
+                            }
+                          }
+
+
                         var table = document.createElement('table');
 
                         var header = table.createTHead();
@@ -49,15 +60,15 @@
                         headCell2.innerHTML = "<b>Chemical Weight</b>"
                         headCell3.innerHTML = "<b>Chemical RFID #</b>"
 
-                        for(var i = 1; i < obj.Items.length+1; i += 1) {
+                        for(var i = 1; i < arr.length+1; i += 1) {
                           var row = table.insertRow(i);
 
                           var cell1 = row.insertCell(0);
                           var cell2 = row.insertCell(1);
                           var cell3 = row.insertCell(2);
-                          cell1.innerHTML = obj.Items[i-1].ChemicalName;
-                          cell2.innerHTML = obj.Items[i-1].ChemicalVolume;
-                          cell3.innerHTML = obj.Items[i-1].RFIDTagNumber;
+                          cell1.innerHTML = arr[i-1].ChemicalName;
+                          cell2.innerHTML = arr[i-1].ChemicalVolume;
+                          cell3.innerHTML = arr[i-1].RFIDTagNumber;
                         }
 
                         document.getElementsByClassName("container")[0].appendChild(table);
