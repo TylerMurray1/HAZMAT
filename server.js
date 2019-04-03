@@ -45,6 +45,13 @@ app.get('/es/', function(req, res){
 
 });
 
+// GERMAN HOME PAGE
+app.get('/de/', function(req, res){
+	authenticated = false;
+	res.sendFile(CONFIG.userFilePath + 'HAZMAT/public/de/scaninDE.html');
+
+});
+
 app.get('/scanBadge', function(req, res) {
 
 	const SerialPort = require('serialport');
