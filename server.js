@@ -132,7 +132,7 @@ app.get('/scanReturnChemical', (req, res) => {
                             ChemicalPercentLeft: "do some division",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
-          Chemicals.storeJSONString(JSON.stringify(closetJSON));
+          Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
 	  res.send("http://localhost:3000/return");
@@ -176,7 +176,7 @@ app.get('/scanRemoveChemical', (req, res) => {
                             ChemicalPercentLeft: "do some division",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
-          Chemicals.storeJSONString(JSON.stringify(closetJSON));
+          Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
 	  res.send("http://localhost:3000/logout");
@@ -216,7 +216,7 @@ app.post('/scanNewChemical', (req, res) => {
                             ChemicalPercentLeft: "100%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
-          Chemicals.storeJSONString(JSON.stringify(closetJSON));
+          Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
 	  res.send("http://localhost:3000/transaction");
