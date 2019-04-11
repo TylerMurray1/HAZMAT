@@ -21,6 +21,9 @@ app.use(express.static(path.join(__dirname, "/public")));
 var dataStore = "";
 var rfidTag = "";
 var weight = "";
+var maxVolume = "";
+var chemName = "";
+var expDate = "";
 var badgeID = "";
 
 
@@ -75,24 +78,35 @@ app.get('/signin', (req, res) => {
 
 // THE TRANSACTION TYPE PAGE
 app.get('/transaction', (req, res) => {
+	authenticated = true;
 	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/transaction.html');
 
 });
 
 // REMOVING A CHEMICAL PAGE
 app.get('/removeItem', (req, res) => {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html');
-
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html');
+	} else {
+		res.redirect('/');
+	}
 });
 
 //SCAN THE ITEM PAGE
 app.get('/returnScan', (req, res) => {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnScan.html');
-
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnScan.html');
+	} else {
+		res.redirect('/');
+	}
 });
 
 app.get('/newItem', (req, res) => {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/addItem.html');
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/addItem.html');
+	} else {
+		res.redirect('/');
+	}
 });
 
 // WEIGH THE ITEM PAGE
@@ -107,13 +121,16 @@ app.get('/scanReturnChemical', (req, res) => {
         const Readline = require('@serialport/parser-readline');
         const port = new SerialPort('/dev/ttyACM0');
         const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
-        parser.on('data', function() {
-	 dataStore = parser.buffer.toString('utf8');
+        parser.on('data', data => {
+	 dataStore = data;
          dataArray = dataStore.split(": ");
          rfidTag = dataArray[0];
          weight = dataArray[1];
+	 chemName = dataArray[2];
+	 maxVolume = dataArray[3];
+	 expDate = dataArray[4];
 	 port.close(function () {console.log('Serial Connection Port: Closed (After return scan)');});
-	if (parseFloat(weight) != 0.0) {
+	 if (parseFloat(weight) != 0.0) {
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
           var eth = web3.eth;
@@ -121,15 +138,15 @@ app.get('/scanReturnChemical', (req, res) => {
 	  var abi = [ { "constant": false, "inputs": [ { "name": "_jsonObject", "type": "string" } ], "name": "storeJSONString", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xaa245386" } ];
           var chemicalsContract = web3.eth.contract(abi);
           var Chemicals = chemicalsContract.at("0x3446c90511d16931Ff125851D2E8261110CB6E97");
-          var jsonUpdate = {ChemicalName:"from datasheet",
-                            ChemicalExpDate:"from datasheet",
-                            MaxVolume:"from datasheet",
+          var jsonUpdate = {ChemicalName: chemName,
+                            ChemicalExpDate: expDate,
+                            MaxVolume: maxVolume,
                             RFIDTagNumber: rfidTag,
                             ChemicalVolume: weight,
                             TransactionType:"RETURN",
-                            UserID:"from array",
+                            UserID:"test",
                             IsEmpty:"FALSE",
-                            ChemicalPercentLeft: "do some division",
+                            ChemicalPercentLeft: (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2).toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
@@ -151,11 +168,14 @@ app.get('/scanRemoveChemical', (req, res) => {
         const Readline = require('@serialport/parser-readline');
         const port = new SerialPort('/dev/ttyACM0');
         const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
-        parser.on('data', function() {
-          dataStore = parser.buffer.toString('utf8');
+        parser.on('data', data => {
+          dataStore = data;
           dataArray = dataStore.split(": ");
           rfidTag = dataArray[0];
           weight = dataArray[1];
+	  chemName = dataArray[2];
+	  maxVolume = dataArray[3];
+	  expDate = dataArray[4];
 	  port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
 
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
@@ -165,15 +185,15 @@ app.get('/scanRemoveChemical', (req, res) => {
 	        var abi = [ { "constant": false, "inputs": [ { "name": "_jsonObject", "type": "string" } ], "name": "storeJSONString", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xaa245386" } ];
           var chemicalsContract = web3.eth.contract(abi);
           var Chemicals = chemicalsContract.at("0x3446c90511d16931Ff125851D2E8261110CB6E97");
-          var jsonUpdate = {ChemicalName:"from datasheet",
-                            ChemicalExpDate:"from datasheet",
-                            MaxVolume:"from datasheet",
+          var jsonUpdate = {ChemicalName:chemName,
+                            ChemicalExpDate: expDate,
+                            MaxVolume: maxVolume,
                             RFIDTagNumber: rfidTag,
                             ChemicalVolume: weight,
                             TransactionType:"REMOVE",
                             UserID:"from array",
                             IsEmpty:"FALSE",
-                            ChemicalPercentLeft: "do some division",
+                            ChemicalPercentLeft: (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2).toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
@@ -185,18 +205,21 @@ app.get('/scanRemoveChemical', (req, res) => {
 
 });
 
-app.post('/scanNewChemical', (req, res) => {
+app.get('/scanNewChemical', (req, res) => {
 	//INITIALISE THE SERIAL CONNECTION
         const SerialPort = require('serialport');
         const Readline = require('@serialport/parser-readline');
         const port = new SerialPort('/dev/ttyACM0');
         const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
-        parser.on('data', function() {
-          dataStore = parser.buffer.toString('utf8');
+        parser.on('data', data => {
+          dataStore = data;
           dataArray = dataStore.split(": ");
           rfidTag = dataArray[0];
           weight = dataArray[1];
-	        port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
+	  chemName = dataArray[2];
+          maxVolume = dataArray[3];
+ 	  expDate = dataArray[4];
+          port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
 
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -205,9 +228,9 @@ app.post('/scanNewChemical', (req, res) => {
 	        var abi = [ { "constant": false, "inputs": [ { "name": "_jsonObject", "type": "string" } ], "name": "storeJSONString", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xaa245386" } ];
           var chemicalsContract = web3.eth.contract(abi);
           var Chemicals = chemicalsContract.at("0x3446c90511d16931Ff125851D2E8261110CB6E97");
-          var jsonUpdate = {ChemicalName: req.body.name,
-                            ChemicalExpDate:req.body.date,
-                            MaxVolume:req.body.volume,
+          var jsonUpdate = {ChemicalName: chemName,
+                            ChemicalExpDate: expDate,
+                            MaxVolume: maxVolume,
                             RFIDTagNumber: rfidTag,
                             ChemicalVolume: weight,
                             TransactionType:"INIT",
@@ -226,16 +249,27 @@ app.post('/scanNewChemical', (req, res) => {
 });
 
 app.get('/return', (req, res) => {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/return.html')
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/return.html');
+	} else {
+		res.redirect('/');
+        }
 });
 
 app.get('/returnDispose', (req, res) => {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnDispose.html')
-
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnDispose.html');
+	} else {
+		res.redirect('/');
+	}
 });
 
 app.get('/logout', (req, res) => {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html');
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html');
+	} else {
+		res.redirect('/');
+	}
 });
 
 app.get('/dataSheets', function (req, res) {
@@ -243,7 +277,11 @@ app.get('/dataSheets', function (req, res) {
 })
 
 app.get('/closetOverview', function (req, res) {
-	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/closetOverview.html');
+	if (authenticated == true) {
+		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/closetOverview.html');
+	} else {
+		res.redirect('/');
+	}
 })
 
 app.get('/getClosetJSON', function (req, res) {
