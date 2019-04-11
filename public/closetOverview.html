@@ -83,6 +83,14 @@
                             cell4.innerHTML = "IN";
                           }
 			  cell5.innerHTML = arr[i-1].ChemicalPercentLeft;
+        var percentInt = parseInt(arr[i-1].ChemicalPercentLeft.slice(0, -1));
+        if (percentInt > 10 && percentInt <= 25) {
+          cell5.style.backgroundColor = "yellow";
+        } else if (percentInt <= 10) {
+          cell5.style.backgroundColor = "red";
+        } else {
+          cell5.style.backgroundColor = "green"
+        }
 
                         }
 

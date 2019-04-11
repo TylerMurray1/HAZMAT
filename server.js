@@ -31,7 +31,26 @@ var badgeID = "";
 var closetJSON = {
 	Company:"UGA Capstone Team 48",
 	Location:"145 Heatherwood Ln. Athens,Ga 30601",
-	Items:  []
+	Items:  [{ChemicalName: "Chem1",
+						ChemicalExpDate: "12122019",
+						MaxVolume: "15",
+						RFIDTagNumber: "123123123321",
+						ChemicalVolume: "12.5",
+						TransactionType:"RETURN",
+						UserID:"test",
+						IsEmpty:"FALSE",
+						ChemicalPercentLeft: (parseFloat("12.5")/parseFloat("15") * 100).toFixed(2).toString() + "%",
+						Date: new Date(Date.now()).toLocaleString()},
+						{ChemicalName: "chem2",
+            ChemicalExpDate: "01202020",
+            MaxVolume: "20",
+            RFIDTagNumber: "33333322222211",
+            ChemicalVolume: "2",
+            TransactionType:"RETURN",
+            UserID:"test",
+            IsEmpty:"FALSE",
+            ChemicalPercentLeft: (parseFloat("5")/parseFloat("20") * 100).toFixed(2).toString() + "%",
+            Date: new Date(Date.now()).toLocaleString()}]
 }
 
 // HOME PAGE
