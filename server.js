@@ -109,12 +109,6 @@ app.get('/newItem', (req, res) => {
 	}
 });
 
-// WEIGH THE ITEM PAGE
-//app.get('/returnWeigh', (req, res) => {
-//	res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnWeigh.html');
-
-//});
-
 app.get('/scanReturnChemical', (req, res) => {
 	//INITIALISE THE SERIAL CONNECTION
         const SerialPort = require('serialport');
@@ -149,6 +143,11 @@ app.get('/scanReturnChemical', (req, res) => {
                             ChemicalPercentLeft: (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2).toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
+
+					// put file write here
+					let writeData = JSON.stringify(closetJSON);
+					fs.writeFileSync('closetJSONFile.json', writeDate);
+
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
@@ -196,7 +195,12 @@ app.get('/scanRemoveChemical', (req, res) => {
                             ChemicalPercentLeft: (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2).toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
-          Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
+
+					// put file write here
+					let writeData = JSON.stringify(closetJSON);
+					fs.writeFileSync('closetJSONFile.json', writeDate);
+
+					Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
 	  res.send("http://localhost:3000/logout");
@@ -239,6 +243,11 @@ app.get('/scanNewChemical', (req, res) => {
                             ChemicalPercentLeft: "100%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
+
+					// put file write here
+					let writeData = JSON.stringify(closetJSON);
+					fs.writeFileSync('closetJSONFile.json', writeDate);
+
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
@@ -285,7 +294,9 @@ app.get('/closetOverview', function (req, res) {
 })
 
 app.get('/getClosetJSON', function (req, res) {
-	res.json(closetJSON);
+	let data = fs.readFileSync('closetJSONFile.json');
+	let closetJSONFileData = JSON.parse(data);
+	res.json(closetJSONFileData);
 })
 
 app.get('/favicon.ico', (req, res) => {res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/favicon.ico')})
