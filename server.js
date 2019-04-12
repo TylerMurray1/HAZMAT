@@ -144,9 +144,12 @@ app.get('/scanReturnChemical', (req, res) => {
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
 
-					// put file write here
-					let writeData = JSON.stringify(closetJSON);
-					fs.writeFileSync('closetJSONFile.json', writeData);
+					let jsonData = fs.readFileSync('closetJSONFile.json');
+			    let closetJSONFileData = JSON.parse(jsonData);
+					closetJSONFileData.Items.push(jsonUpdate);
+				  // put file write here
+				  let writeData = closetJSONFileData;
+				  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
 
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
@@ -197,10 +200,10 @@ app.get('/scanRemoveChemical', (req, res) => {
           closetJSON["Items"].push(jsonUpdate);
 
 	  let jsonData = fs.readFileSync('closetJSONFile.json');
-          let closetJSONFileData = JSON.parse(jsonData);
-
+    let closetJSONFileData = JSON.parse(jsonData);
+		closetJSONFileData.Items.push(jsonUpdate);
 	  // put file write here
-	  let writeData = closetJSONFileData.Items.push(jsonUpdate);
+	  let writeData = closetJSONFileData;
 	  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
 
 	  Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
@@ -247,9 +250,12 @@ app.get('/scanNewChemical', (req, res) => {
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
 
-					// put file write here
-					let writeData = JSON.stringify(closetJSON);
-					fs.writeFileSync('closetJSONFile.json', writeData);
+					let jsonData = fs.readFileSync('closetJSONFile.json');
+			    let closetJSONFileData = JSON.parse(jsonData);
+					closetJSONFileData.Items.push(jsonUpdate);
+				  // put file write here
+				  let writeData = closetJSONFileData;
+				  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
 
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
