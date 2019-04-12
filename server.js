@@ -146,7 +146,7 @@ app.get('/scanReturnChemical', (req, res) => {
 
 					// put file write here
 					let writeData = JSON.stringify(closetJSON);
-					fs.writeFileSync('closetJSONFile.json', writeDate);
+					fs.writeFileSync('closetJSONFile.json', writeData);
 
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
@@ -196,11 +196,14 @@ app.get('/scanRemoveChemical', (req, res) => {
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
 
-					// put file write here
-					let writeData = JSON.stringify(closetJSON);
-					fs.writeFileSync('closetJSONFile.json', writeDate);
+	  let jsonData = fs.readFileSync('closetJSONFile.json');
+          let closetJSONFileData = JSON.parse(jsonData);
 
-					Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
+	  // put file write here
+	  let writeData = closetJSONFileData.Items.push(jsonUpdate);
+	  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
+
+	  Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
 
 	  res.send("http://localhost:3000/logout");
@@ -246,7 +249,7 @@ app.get('/scanNewChemical', (req, res) => {
 
 					// put file write here
 					let writeData = JSON.stringify(closetJSON);
-					fs.writeFileSync('closetJSONFile.json', writeDate);
+					fs.writeFileSync('closetJSONFile.json', writeData);
 
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
 	  console.log(JSON.stringify(closetJSON));
