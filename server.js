@@ -34,6 +34,15 @@ var closetJSON = {
 	Items:  []
 }
 
+var chemicalNameJSON = {
+	"0001":"SA5W-20 OIL",
+	"0002":"CRYSTAL SPRINGS WATER",
+	"0003":"FROSTED FLAKES",
+	"0004":"WHITE PAINT",
+	"0005":"MINWAX POLYURETHANE",
+	"0006":"LOCTICE SILICONE"
+}
+
 // HOME PAGE
 app.get('/', function(req, res){
 	authenticated = false;
@@ -120,11 +129,11 @@ app.get('/scanReturnChemical', (req, res) => {
          dataArray = dataStore.split(": ");
          rfidTag = dataArray[0];
          weight = dataArray[1];
-	 chemName = dataArray[2];
+	 chemName = chemicalNameJSON[dataArray[2]];
 	 maxVolume = dataArray[3];
 	 expDate = dataArray[4];
 	 port.close(function () {console.log('Serial Connection Port: Closed (After return scan)');});
-	 if (parseFloat(weight) != 0.0) {
+	 if ((parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2) > 3.0) {
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
           var eth = web3.eth;
@@ -175,7 +184,7 @@ app.get('/scanRemoveChemical', (req, res) => {
           dataArray = dataStore.split(": ");
           rfidTag = dataArray[0];
           weight = dataArray[1];
-	  chemName = dataArray[2];
+	  chemName = chemicalNameJSON[dataArray[2]];
 	  maxVolume = dataArray[3];
 	  expDate = dataArray[4];
 	  port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
@@ -226,7 +235,7 @@ app.get('/scanNewChemical', (req, res) => {
           dataArray = dataStore.split(": ");
           rfidTag = dataArray[0];
           weight = dataArray[1];
-	  chemName = dataArray[2];
+	  chemName = chemicalNameJSON[dataArray[2]];
           maxVolume = dataArray[3];
  	  expDate = dataArray[4];
           port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
