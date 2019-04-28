@@ -36,17 +36,16 @@
                 if(Http.readyState === 4 && Http.status === 200) {
                         var obj = JSON.parse(Http.responseText);
 
-                        var arr = obj.Items;
-
-                          for (var i = 0; i < arr.length; i += 1) {
-                            for (var j = i + 1; j < arr.length; j += 1) {
-                              if (arr[i].RFIDTagNumber == arr[j].RFIDTagNumber) {
-                                arr.splice(i, 1);
-				j-=1;
-                              }
-                            }
-                          }
-
+                        var arrJSON = obj.Items;
+			var arr = [];
+			var tagNumArr = [];
+			
+			for (var i = arrJSON.length-1; i >= 0; i--) {
+			  if (!tagNumArr.includes(arrJSON[i].RFIDTagNumber)) {
+				tagNumArr.push(arrJSON[i].RFIDTagNumber);
+				arr.push(arrJSON[i]);
+			  }	
+			}
 
                         var table = document.createElement('table');
 

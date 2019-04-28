@@ -70,12 +70,12 @@ app.get('/scanBadge', function(req, res) {
 	const Readline = require('@serialport/parser-readline');
 	const port = new SerialPort('/dev/ttyACM0');
 	const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
-
-	parser.on('data', function() {
-                badgeID = parser.buffer.toString('utf8');
-                res.send("http://localhost:3000/transaction");
-		port.close(function () {console.log('Serial Connection Port: Closed (After badge scan)');});
-
+	parser.on('data', data => {
+                badgeID = data.split();
+		if (badgeID[0] == "E") {
+                  res.send("http://localhost:3000/transaction");
+		  port.close(function () {console.log('Serial Connection Port: Closed (After badge scan)');});
+		}
   	})
 });
 
@@ -97,7 +97,7 @@ app.get('/removeItem', (req, res) => {
 	if (authenticated == true) {
 		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/removeItem.html');
 	} else {
-		res.redirect('/');
+		res.redirect('/scanBadge');
 	}
 });
 
@@ -106,7 +106,7 @@ app.get('/returnScan', (req, res) => {
 	if (authenticated == true) {
 		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnScan.html');
 	} else {
-		res.redirect('/');
+		res.redirect('/scanBadge');
 	}
 });
 
@@ -133,7 +133,13 @@ app.get('/scanReturnChemical', (req, res) => {
 	 maxVolume = dataArray[3];
 	 expDate = dataArray[4];
 	 port.close(function () {console.log('Serial Connection Port: Closed (After return scan)');});
-	 if ((parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2) > 3.0) {
+	 var percentLeft = (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2);
+
+	if (percentLeft >= 100.00) {
+		percentLeft = 100.00;
+	}
+
+	if (percentLeft > 3.0) {
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
           var eth = web3.eth;
@@ -149,7 +155,7 @@ app.get('/scanReturnChemical', (req, res) => {
                             TransactionType:"RETURN",
                             UserID:"test",
                             IsEmpty:"FALSE",
-                            ChemicalPercentLeft: (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2).toString() + "%",
+                            ChemicalPercentLeft: percentLeft.toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
 
@@ -161,8 +167,8 @@ app.get('/scanReturnChemical', (req, res) => {
 				  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
 
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
-	  console.log(JSON.stringify(closetJSON));
-
+	console.log("Serial Data: " + dataArray);
+        console.log("Recent Transaction: " + JSON.stringify(jsonUpdate));
 	  res.send("http://localhost:3000/return");
 
 	} else {
@@ -188,7 +194,11 @@ app.get('/scanRemoveChemical', (req, res) => {
 	  maxVolume = dataArray[3];
 	  expDate = dataArray[4];
 	  port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
+	  var percentLeft = (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2);
 
+          if (percentLeft >= 100.00) {
+                  percentLeft = 100.00;
+          }
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
           var eth = web3.eth;
@@ -204,7 +214,7 @@ app.get('/scanRemoveChemical', (req, res) => {
                             TransactionType:"REMOVE",
                             UserID:"from array",
                             IsEmpty:"FALSE",
-                            ChemicalPercentLeft: (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2).toString() + "%",
+                            ChemicalPercentLeft: percentLeft.toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
 
@@ -216,8 +226,8 @@ app.get('/scanRemoveChemical', (req, res) => {
 	  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
 
 	  Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
-	  console.log(JSON.stringify(closetJSON));
-
+	console.log("Serial Data: " + dataArray);
+        console.log("Recent Transaction: " + JSON.stringify(jsonUpdate));
 	  res.send("http://localhost:3000/logout");
 
 	});
@@ -239,12 +249,16 @@ app.get('/scanNewChemical', (req, res) => {
           maxVolume = dataArray[3];
  	  expDate = dataArray[4];
           port.close(function () {console.log('Serial Connection Port: Closed (After removal scan)');});
+	  var percentLeft = (parseFloat(weight)/parseFloat(maxVolume) * 100).toFixed(2);
 
+          if (percentLeft >= 100.00) {
+                  percentLeft = 100.00;
+          }
 	  // STARTING THE BLOCKCHIAIN CONNECTION VIA WEB3.JS
           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
           var eth = web3.eth;
           web3.eth.defaultAccount = web3.eth.accounts[0];
-	        var abi = [ { "constant": false, "inputs": [ { "name": "_jsonObject", "type": "string" } ], "name": "storeJSONString", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xaa245386" } ];
+	  var abi = [ { "constant": false, "inputs": [ { "name": "_jsonObject", "type": "string" } ], "name": "storeJSONString", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xaa245386" } ];
           var chemicalsContract = web3.eth.contract(abi);
           var Chemicals = chemicalsContract.at("0x3446c90511d16931Ff125851D2E8261110CB6E97");
           var jsonUpdate = {ChemicalName: chemName,
@@ -255,7 +269,7 @@ app.get('/scanNewChemical', (req, res) => {
                             TransactionType:"INIT",
                             UserID:"test",
                             IsEmpty:"FALSE",
-                            ChemicalPercentLeft: "100%",
+                            ChemicalPercentLeft: percentLeft.toString() + "%",
                             Date: new Date(Date.now()).toLocaleString()}
           closetJSON["Items"].push(jsonUpdate);
 
@@ -267,8 +281,8 @@ app.get('/scanNewChemical', (req, res) => {
 				  fs.writeFileSync('closetJSONFile.json', JSON.stringify(writeData));
 
           Chemicals.storeJSONString(JSON.stringify(jsonUpdate));
-	  console.log(JSON.stringify(closetJSON));
-
+	  console.log("Serial Data: " + dataArray);
+          console.log("Recent Transaction: " + JSON.stringify(jsonUpdate));
 	  res.send("http://localhost:3000/transaction");
 
 	});
@@ -279,7 +293,7 @@ app.get('/return', (req, res) => {
 	if (authenticated == true) {
 		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/return.html');
 	} else {
-		res.redirect('/');
+		res.redirect('/scanBadge');
         }
 });
 
@@ -287,7 +301,7 @@ app.get('/returnDispose', (req, res) => {
 	if (authenticated == true) {
 		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/returnDispose.html');
 	} else {
-		res.redirect('/');
+		res.redirect('/scanBadge');
 	}
 });
 
@@ -295,7 +309,7 @@ app.get('/logout', (req, res) => {
 	if (authenticated == true) {
 		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/logout.html');
 	} else {
-		res.redirect('/');
+		res.redirect('/scanBadge');
 	}
 });
 
@@ -307,7 +321,7 @@ app.get('/closetOverview', function (req, res) {
 	if (authenticated == true) {
 		res.sendFile(CONFIG.userFilePath+'/HAZMAT/public/closetOverview.html');
 	} else {
-		res.redirect('/');
+		res.redirect('/scanBadge');
 	}
 })
 
